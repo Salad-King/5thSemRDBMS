@@ -218,20 +218,24 @@ def librarian():
                bkid=enterbox('Enter the id of the book to be returned:')
                QUE="SELECT BOOKID FROM BOOKSISSUED"
                UPD3="UPDATE STUDENT SET NO_OF_BOOKS_BORROWED=NO_OF_BOOKS_BORROWED-1 WHERE REGNO="+`sid[0]`
+               checkQuery = "SELECT * FROM BOOKSISSUED WHERE BOOKID="+`bkid`
                DEL="DELETE FROM BOOKSISSUED WHERE BOOKID="+`bkid`
 
                try:
+                   cur.execute(checkQuery)
+                   check = cur.fetchone()
                    cur.execute(DEL)
                    
                                     
                except:
                    exeptionbox()
                    
-               if (cur.fetchone()==None):
-                   print "Transaction successful"
+               if (check==None):
+                   print "Book not found"
                    return
                else:
-                   print 'Book not found'
+                   print "Transaction successful"
+                   cur.execute(UPD3);
                    
                
     	
